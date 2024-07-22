@@ -1,6 +1,6 @@
 import { useDebounce } from '@uidotdev/usehooks';
 import { mintclub, toNumber, wei } from 'mint.club-v2-sdk';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function useBuySell(
@@ -55,9 +55,17 @@ export default function useBuySell(
     try {
       setLoading(true);
       // TODO: Mission 8: buy NFT using sdk
-      // https://sdk.mint.club/docs/sdk/network/nft/buy
-
-      // ...
+      // https://sdk.mint.club/docs/sdk/network/token-nft/buy
+      await mintclub
+        .network('base')
+        .nft(tokenAddress)
+        .buy({
+          amount: wei(amount, 0),
+          onSuccess,
+          onError(e: any) {
+            toast.error(e?.message);
+          },
+        });
     } finally {
       setLoading(false);
     }
@@ -67,9 +75,14 @@ export default function useBuySell(
     try {
       setLoading(true);
       // TODO: Mission 9: sell NFT using sdk
-      // https://sdk.mint.club/docs/sdk/network/nft/sell
-
-      // ...
+      // https://sdk.mint.club/docs/sdk/network/token-nft/sell
+      await mintclub
+        .network('base')
+        .nft(tokenAddress)
+        .sell({
+          amount: wei(amount, 0),
+          onSuccess,
+        });
     } finally {
       setLoading(false);
     }

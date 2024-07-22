@@ -12,10 +12,10 @@ export default function useNftList() {
       // TODO: Mission 7: fetch list of NFTs using sdk
       // https://sdk.mint.club/docs/sdk/network/bond/getTokensByReserveToken
       // 천원 토큰으로 발행된 NFT 리스트 불러오기 (constants 파일에 정의된 CHUNWON_TOKEN_ADDRESS 사용)
-
-      // ...
-
-      useGlobalStore.setState({ list });
+      const tokens = await mintclub
+        .network('base')
+        .bond.getTokensByReserveToken({ reserveToken: CHUNWON_TOKEN_ADDRESS });
+      useGlobalStore.setState({ list: tokens });
     } catch (e) {
       console.error(e);
       fetchList();
